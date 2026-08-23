@@ -27,6 +27,20 @@ app.use('/api/v1/rating-criteria', require('./routes/criteriaRoutes'));
 app.use('/api/v1/grievances', require('./routes/grievanceRoutes'));
 app.use('/api/v1/admin', require('./routes/adminRoutes'));
 
+app.get('/', (req, res) => {
+    res.status(200).json({
+        success: true,
+        service: 'State Tourism Department Homestay Registration & Quality Rating Management Portal API',
+        status: 'Online',
+        version: '1.0.0',
+        documentation: {
+            health: '/api/v1/health',
+            publicDirectory: '/api/v1/homestays/public',
+            auth: '/api/v1/auth',
+        },
+    });
+});
+
 app.get('/api/v1/health', (req, res) => {
     res.status(200).json({
         success: true,
