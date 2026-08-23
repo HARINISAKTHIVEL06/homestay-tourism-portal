@@ -36,7 +36,7 @@ const autoSeedIfEmpty = async () => {
         if (count === 0) {
             console.log('Database is empty. Triggering automated seeding of sample homestays and accounts...');
             const seedData = require('../seed');
-            await seedData();
+            await seedData(true); // pass true to skip re-connecting to DB
             console.log('Automated database seeding complete!');
         }
     } catch (err) {

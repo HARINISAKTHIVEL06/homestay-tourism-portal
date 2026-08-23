@@ -16,9 +16,11 @@ const DEFAULT_CRITERIA = [
     { category: 'Location & Accessibility', weightPercent: 10, description: 'All-weather road access, scenic view, proximity to tourist spots' },
 ];
 
-const seedData = async () => {
+const seedData = async (skipConnect = false) => {
     try {
-        await connectDB();
+        if (!skipConnect) {
+            await connectDB();
+        }
 
         console.log('Clearing existing database collections...');
         await User.deleteMany({});
