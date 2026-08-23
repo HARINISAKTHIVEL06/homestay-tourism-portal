@@ -8,6 +8,9 @@ const connectDB = async () => {
             serverSelectionTimeoutMS: 5000, // 5s timeout instead of hanging
         });
         console.log(`MongoDB Connected: ${conn.connection.host}`);
+
+        // Auto-seed if database is fresh / empty
+        await autoSeedIfEmpty();
     } catch (error) {
         console.error(`MongoDB Primary Connection Error: ${error.message}`);
         console.log('Attempting in-memory database fallback...');
@@ -19,10 +22,25 @@ const connectDB = async () => {
             console.log(`Fallback In-Memory MongoDB Connected: ${conn.connection.host}`);
 
             // Auto-seed initial data into in-memory instance
-            const seedFn = require('../seed');
+            await autoSeedIfEmpty();
         } catch (fallbackError) {
             console.error(`Fallback DB Error: ${fallbackError.message}`);
         }
+    }
+};
+
+const autoSeedIfEmpty = async () => {
+    try {
+        const Homestay = require('../models/Homestay');
+        const count = await Homestay.countDocuments();
+        if (count === 0) {
+            console.log('Database is empty. Triggering automated seeding of sample homestays and accounts...');
+            const seedData = require('../seed');
+            await seedData();
+            console.log('Automated database seeding complete!');
+        }
+    } catch (err) {
+        console.error('Auto-seed check error:', err.message);
     }
 };
 
