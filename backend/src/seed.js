@@ -265,11 +265,19 @@ const seedData = async () => {
         console.log('4. Owner: owner@gmail.com / Owner@123');
         console.log('====================================================');
 
-        process.exit(0);
+        if (require.main === module) {
+            process.exit(0);
+        }
     } catch (error) {
         console.error('Database Seed Error:', error);
-        process.exit(1);
+        if (require.main === module) {
+            process.exit(1);
+        }
     }
 };
 
-seedData();
+if (require.main === module) {
+    seedData();
+}
+
+module.exports = seedData;
