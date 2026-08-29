@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const getBaseURL = () => import.meta.env.VITE_API_BASE_URL || '/api/v1';
+
 const API = axios.create({
-    baseURL: '/api/v1',
+    baseURL: getBaseURL(),
     headers: {
         'Content-Type': 'application/json',
     },
@@ -29,7 +31,7 @@ API.interceptors.response.use(
             try {
                 const refreshToken = localStorage.getItem('homestay_refresh_token');
                 if (refreshToken) {
-                    const res = await axios.post('/api/v1/auth/refresh-token', { token: refreshToken });
+                    const res = await axios.post(`${getBaseURL()}/auth/refresh-token`, { token: refreshToken });
                     const newAccessToken = res.data.data.token;
                     localStorage.setItem('homestay_token', newAccessToken);
                     API.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
