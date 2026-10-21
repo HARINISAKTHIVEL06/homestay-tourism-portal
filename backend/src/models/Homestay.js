@@ -122,6 +122,13 @@ const homestaySchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        digitalSignatureHash: {
+            type: String,
+        },
+        ecoCertified: {
+            type: Boolean,
+            default: false,
+        },
         ratingHistory: [
             {
                 type: mongoose.Schema.Types.ObjectId,

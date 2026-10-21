@@ -14,7 +14,9 @@ import {
     Eye,
     FileEdit,
     Send,
-    AlertTriangle
+    AlertTriangle,
+    Sparkles,
+    Compass,
 } from 'lucide-react';
 
 const OwnerDashboard = () => {
@@ -146,12 +148,42 @@ const OwnerDashboard = () => {
                         </p>
                     </div>
 
+                    <div className="flex flex-wrap items-center gap-3">
+                        <Link
+                            to="/pre-audit"
+                            className="flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-sky-400 border border-sky-500/30 hover:border-sky-500/60 font-semibold px-4 py-3 rounded-xl shadow-md transition-all"
+                        >
+                            <Sparkles className="w-4 h-4 text-amber-400" />
+                            <span>AI Pre-Audit Simulator</span>
+                        </Link>
+                        <Link
+                            to="/owner/homestays/new"
+                            className="flex items-center space-x-2 bg-gradient-to-r from-sky-500 to-emerald-500 hover:from-sky-400 hover:to-emerald-400 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5"
+                        >
+                            <PlusCircle className="w-5 h-5" />
+                            <span>Register New Property</span>
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Pre-Audit Advisor Hint Banner */}
+                <div className="bg-sky-950/40 border border-sky-800/60 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                    <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 rounded-xl bg-sky-900/80 border border-sky-700 flex items-center justify-center shrink-0">
+                            <Sparkles className="w-4 h-4 text-sky-400" />
+                        </div>
+                        <div>
+                            <span className="font-bold text-white">Avoid Registration Rejection or Delays: </span>
+                            <span className="text-slate-300">
+                                Run the official AI Pre-Audit Scanner to verify fire safety, resident host norms, and projected Star Rating before applying.
+                            </span>
+                        </div>
+                    </div>
                     <Link
-                        to="/owner/homestays/new"
-                        className="flex items-center space-x-2 bg-gradient-to-r from-sky-500 to-emerald-500 hover:from-sky-400 hover:to-emerald-400 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5"
+                        to="/pre-audit"
+                        className="text-sky-400 hover:text-sky-300 font-bold whitespace-nowrap shrink-0 flex items-center space-x-1"
                     >
-                        <PlusCircle className="w-5 h-5" />
-                        <span>Register New Property</span>
+                        <span>Check Property Readiness &rarr;</span>
                     </Link>
                 </div>
 

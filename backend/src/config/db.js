@@ -5,16 +5,18 @@ const connectDB = async () => {
         const uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/homestay_portal';
         console.log(`Connecting to MongoDB...`);
         const conn = await mongoose.connect(uri, {
-            serverSelectionTimeoutMS: 5000, // 5s timeout instead of hanging
+            serverSelectionTimeoutMS: 8000,
         });
         console.log(`MongoDB Connected: ${conn.connection.host}`);
 
         // Auto-seed if database is fresh / empty
         await autoSeedIfEmpty();
+        return conn;
     } catch (error) {
         console.error(`MongoDB Primary Connection Error: ${error.message}`);
         console.log('Attempting in-memory database fallback...');
         try {
+            await mongoose.disconnect().catch(() => {});
             const { MongoMemoryServer } = require('mongodb-memory-server');
             const mongod = await MongoMemoryServer.create();
             const memoryUri = mongod.getUri();
@@ -23,6 +25,7 @@ const connectDB = async () => {
 
             // Auto-seed initial data into in-memory instance
             await autoSeedIfEmpty();
+            return conn;
         } catch (fallbackError) {
             console.error(`Fallback DB Error: ${fallbackError.message}`);
         }

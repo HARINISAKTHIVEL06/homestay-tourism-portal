@@ -1,13 +1,17 @@
+const dotenv = require('dotenv');
+const isTestEnv = process.env.NODE_ENV === 'test' || Boolean(process.env.JEST_WORKER_ID);
+dotenv.config();
+if (isTestEnv) {
+    process.env.NODE_ENV = 'test';
+}
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const { errorHandler } = require('./middleware/errorHandlerMiddleware');
 
-dotenv.config();
-
-connectDB();
+const dbPromise = connectDB();
 
 const app = express();
 
@@ -53,10 +57,11 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && !process.env.JEST_WORKER_ID) {
     app.listen(PORT, () => {
         console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
     });
 }
 
 module.exports = app;
+module.exports.dbPromise = dbPromise;

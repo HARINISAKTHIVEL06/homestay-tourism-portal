@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import API from '../services/api';
-import { Search, MapPin, Star, Filter, ArrowRight, Building2 } from 'lucide-react';
+import { Search, MapPin, Star, Filter, ArrowRight, Building2, Compass, Leaf, Sparkles } from 'lucide-react';
 
 const SearchPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -60,9 +60,21 @@ const SearchPage = () => {
             <div className="max-w-7xl mx-auto space-y-8">
 
                 {/* Header */}
-                <div>
-                    <h1 className="text-3xl font-extrabold text-white font-outfit">Official Certified Homestays Directory</h1>
-                    <p className="text-xs text-slate-400 mt-1">Browse state tourism department verified properties with star ratings.</p>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 className="text-3xl font-extrabold text-white font-outfit">Official Certified Homestays Directory</h1>
+                        <p className="text-xs text-slate-400 mt-1">Browse state tourism department verified properties with star ratings.</p>
+                    </div>
+
+                    <div className="flex items-center space-x-3 shrink-0">
+                        <Link
+                            to="/explorer"
+                            className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-sky-600 hover:from-emerald-500 hover:to-sky-500 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center space-x-2"
+                        >
+                            <Compass className="w-4 h-4" />
+                            <span>Interactive State GIS Map</span>
+                        </Link>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">

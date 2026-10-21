@@ -7,8 +7,16 @@ describe('State Tourism Homestay Portal API Tests', () => {
     let ownerToken = '';
 
     beforeAll(async () => {
-        // Allow DB connection to settle if needed
-    });
+        if (app.dbPromise) {
+            await app.dbPromise;
+        }
+        if (mongoose.connection.readyState !== 1) {
+            await new Promise((resolve) => {
+                if (mongoose.connection.readyState === 1) return resolve();
+                mongoose.connection.once('open', resolve);
+            });
+        }
+    }, 35000);
 
     afterAll(async () => {
         await mongoose.connection.close();
@@ -66,11 +74,12 @@ describe('State Tourism Homestay Portal API Tests', () => {
             expect(Array.isArray(res.body.data)).toBe(true);
         });
 
-        it('should verify a valid homestay registration number', async () => {
+        it('should verify a valid homestay registration number with digital signature hash', async () => {
             const res = await request(app).get('/api/v1/homestays/verify/STATE-CEN-2026-1001');
             expect(res.statusCode).toEqual(200);
             expect(res.body.success).toBe(true);
             expect(res.body.data.propertyName).toBeDefined();
+            expect(res.body.data.digitalSignatureHash).toBeDefined();
         });
 
         it('should generate and download PDF certificate for an approved homestay', async () => {
@@ -83,8 +92,10 @@ describe('State Tourism Homestay Portal API Tests', () => {
         });
     });
 
-    describe('3. Public Grievance API', () => {
-        it('should allow public complaint submission', async () => {
+    describe('3. Public Grievance API & SLA Tracking', () => {
+        let createdTicketId = '';
+
+        it('should allow public complaint submission with AI urgency triage', async () => {
             const res = await request(app)
                 .post('/api/v1/grievances')
                 .send({
@@ -94,12 +105,63 @@ describe('State Tourism Homestay Portal API Tests', () => {
                         email: 'tourist@example.com',
                         phone: '+91 98888 77777',
                     },
-                    subject: 'Testing API Grievance',
-                    description: 'Automated test grievance submission.',
+                    subject: 'Testing API Grievance Cleanliness',
+                    description: 'Automated test grievance submission regarding hygiene standards.',
                 });
 
             expect([200, 201]).toContain(res.statusCode);
             expect(res.body.success).toBe(true);
+            expect(res.body.data.ticketId).toBeDefined();
+            createdTicketId = res.body.data.ticketId;
+        });
+
+        it('should allow public tracking of grievance timeline by ticket ID', async () => {
+            const ticketToTrack = createdTicketId || 'GRV-2026-10492';
+            const res = await request(app).get(`/api/v1/grievances/track/${ticketToTrack}`);
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.success).toBe(true);
+            expect(res.body.data.timeline).toBeDefined();
+            expect(Array.isArray(res.body.data.timeline)).toBe(true);
+        });
+    });
+
+    describe('4. Novel Differentiating Features: Pre-Audit Simulator & GIS Explorer', () => {
+        it('should calculate AI pre-audit score and predicted star rating', async () => {
+            const res = await request(app)
+                .post('/api/v1/homestays/pre-audit')
+                .send({
+                    propertyName: 'Emerald Green Valley Retreat',
+                    district: 'Western Ghats District',
+                    hasFireExtinguisher: true,
+                    hasCCTV: true,
+                    hasFirstAid: true,
+                    hasHostResiding: true,
+                    hasSolarPower: true,
+                    hasRainwaterHarvesting: true,
+                    hasWasteSegregation: true,
+                    hasLocalFood: true,
+                    hasGuidedTours: true,
+                    hasAttachedBaths: true,
+                    hasWifi: true,
+                    hasPowerBackup: true,
+                    hasHotWater: true,
+                    hasPavedRoad: true,
+                    hasScenicView: true,
+                });
+
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.success).toBe(true);
+            expect(res.body.data.predictedStars).toBeGreaterThanOrEqual(4);
+            expect(res.body.data.pillarBreakdown).toBeDefined();
+            expect(res.body.data.scorePercentage).toBeGreaterThan(80);
+        });
+
+        it('should return GIS spatial data and district aggregates', async () => {
+            const res = await request(app).get('/api/v1/homestays/gis-data');
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.success).toBe(true);
+            expect(res.body.districts).toBeDefined();
+            expect(Array.isArray(res.body.homestays)).toBe(true);
         });
     });
 });

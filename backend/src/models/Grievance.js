@@ -22,6 +22,32 @@ const grievanceSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Description is required'],
         },
+        ticketId: {
+            type: String,
+            unique: true,
+            sparse: true,
+        },
+        priority: {
+            type: String,
+            enum: ['critical', 'high', 'medium', 'standard'],
+            default: 'medium',
+        },
+        category: {
+            type: String,
+            enum: ['safety_security', 'hygiene_cleanliness', 'billing_fraud', 'amenities', 'other'],
+            default: 'other',
+        },
+        slaDeadline: {
+            type: Date,
+        },
+        timeline: [
+            {
+                stage: { type: String, required: true },
+                timestamp: { type: Date, default: Date.now },
+                note: String,
+                updatedBy: String,
+            },
+        ],
         status: {
             type: String,
             enum: ['open', 'investigating', 'resolved', 'dismissed'],

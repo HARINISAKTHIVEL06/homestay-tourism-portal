@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import API from '../services/api';
 import {
     BarChart,
@@ -23,7 +24,12 @@ import {
     Users,
     FileText,
     Star,
-    Save
+    Save,
+    Compass,
+    Sparkles,
+    Leaf,
+    ArrowRight,
+    Zap
 } from 'lucide-react';
 
 const AdminDashboardPage = () => {
@@ -116,7 +122,7 @@ const AdminDashboardPage = () => {
             <div className="max-w-7xl mx-auto space-y-8">
 
                 {/* Banner */}
-                <div className="bg-gradient-to-r from-slate-900 via-slate-900 to-sky-950 p-8 rounded-3xl border border-slate-800 shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="bg-gradient-to-r from-slate-900 via-slate-900 to-sky-950 p-8 rounded-3xl border border-slate-800 shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                     <div>
                         <div className="flex items-center space-x-2 text-sky-400 font-semibold text-sm mb-1">
                             <Building2 className="w-4 h-4" />
@@ -128,6 +134,23 @@ const AdminDashboardPage = () => {
                         <p className="text-slate-400 text-sm mt-1">
                             Statewide registration metrics, quality star distributions, SLA compliance, and criteria weight management.
                         </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3 shrink-0">
+                        <Link
+                            to="/explorer"
+                            className="flex items-center space-x-2 px-4 py-2.5 bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-800 font-bold rounded-xl text-xs shadow-md transition-all"
+                        >
+                            <Compass className="w-4 h-4 text-emerald-400" />
+                            <span>State GIS Spatial Radar</span>
+                        </Link>
+                        <Link
+                            to="/pre-audit"
+                            className="flex items-center space-x-2 px-4 py-2.5 bg-sky-950/80 hover:bg-sky-900 text-sky-300 border border-sky-800 font-bold rounded-xl text-xs shadow-md transition-all"
+                        >
+                            <Sparkles className="w-4 h-4 text-amber-400" />
+                            <span>AI Pre-Audit Simulator</span>
+                        </Link>
                     </div>
                 </div>
 

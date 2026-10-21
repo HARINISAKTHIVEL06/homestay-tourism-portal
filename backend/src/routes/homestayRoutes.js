@@ -13,6 +13,8 @@ const {
     uploadDocument,
     uploadPhoto,
     verifyHomestay,
+    calculatePreAudit,
+    getGisData,
     downloadCertificate,
 } = require('../controllers/homestayController');
 const { protect } = require('../middleware/authMiddleware');
@@ -23,6 +25,8 @@ const upload = require('../middleware/uploadMiddleware');
 router.get('/public', getPublicHomestays);
 router.get('/public/:id', getPublicHomestayById);
 router.get('/verify/:regNumber', verifyHomestay);
+router.post('/pre-audit', calculatePreAudit);
+router.get('/gis-data', getGisData);
 router.get('/:id/certificate', downloadCertificate);
 
 // Protected routes

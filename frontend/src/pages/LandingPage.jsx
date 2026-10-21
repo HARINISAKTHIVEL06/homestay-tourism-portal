@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import API from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 import {
     Building2,
     Search,
@@ -13,10 +14,16 @@ import {
     Users,
     Clock,
     HelpCircle,
-    Sparkles
+    Sparkles,
+    Compass,
+    QrCode,
+    Leaf,
+    Flame,
+    FileText
 } from 'lucide-react';
 
 const LandingPage = () => {
+    const { t } = useLanguage();
     const [featuredHomestays, setFeaturedHomestays] = useState([]);
     const [searchDistrict, setSearchDistrict] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
@@ -139,6 +146,59 @@ const LandingPage = () => {
                 </div>
             </section>
 
+            {/* Differentiating Innovations Showcase: Pre-Audit & State GIS */}
+            <section className="py-12 border-b border-slate-800 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    {/* AI Pre-Audit Advisor Card */}
+                    <div className="bg-gradient-to-br from-slate-900 to-sky-950/40 border border-sky-800/40 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-sky-500/50 transition-all shadow-xl group">
+                        <div className="flex items-center space-x-2 text-sky-400 text-xs font-bold uppercase tracking-wider">
+                            <Sparkles className="w-4 h-4 text-sky-400 animate-pulse" />
+                            <span>Official Self-Evaluation Suite</span>
+                        </div>
+                        <h3 className="text-2xl font-extrabold text-white font-outfit">
+                            AI Homestay Quality & Star-Rating Pre-Audit Advisor
+                        </h3>
+                        <p className="text-xs text-slate-300 leading-relaxed">
+                            Planning to open or register a homestay? Run the State Department's automated compliance scanner to estimate your official Star Rating, detect safety gaps, and unlock rural eco subsidies.
+                        </p>
+                        <div className="pt-2">
+                            <Link
+                                to="/pre-audit"
+                                className="inline-flex items-center space-x-2 px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-md transition-all group-hover:translate-x-1"
+                            >
+                                <span>Simulate Star Rating & Audit Readiness</span>
+                                <ArrowRight className="w-4 h-4" />
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* State GIS Geo-Explorer Card */}
+                    <div className="bg-gradient-to-br from-slate-900 to-emerald-950/40 border border-emerald-800/40 rounded-3xl p-6 sm:p-8 space-y-4 hover:border-emerald-500/50 transition-all shadow-xl group">
+                        <div className="flex items-center space-x-2 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                            <Compass className="w-4 h-4 text-emerald-400" />
+                            <span>Spatial Planning & Heatmap</span>
+                        </div>
+                        <h3 className="text-2xl font-extrabold text-white font-outfit">
+                            Interactive State GIS Eco-Tourism Explorer
+                        </h3>
+                        <p className="text-xs text-slate-300 leading-relaxed">
+                            Discover certified homestays plotted on the interactive State GIS Map. View district density, eco-certified green stays, and government priority dispersal zones.
+                        </p>
+                        <div className="pt-2">
+                            <Link
+                                to="/explorer"
+                                className="inline-flex items-center space-x-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-md transition-all group-hover:translate-x-1"
+                            >
+                                <span>Launch State GIS Map</span>
+                                <ArrowRight className="w-4 h-4" />
+                            </Link>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
             {/* Featured Certified Homestays */}
             <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-slate-800 pb-4">
@@ -146,13 +206,22 @@ const LandingPage = () => {
                         <span className="text-xs font-bold text-sky-400 uppercase tracking-wider">Department Endorsed</span>
                         <h2 className="text-2xl sm:text-3xl font-bold text-white font-outfit">Featured Star Rated Homestays</h2>
                     </div>
-                    <Link
-                        to="/search"
-                        className="flex items-center space-x-1 text-xs font-bold text-sky-400 hover:text-sky-300"
-                    >
-                        <span>View All Homestays</span>
-                        <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    <div className="flex items-center space-x-4">
+                        <Link
+                            to="/explorer"
+                            className="flex items-center space-x-1 text-xs font-bold text-emerald-400 hover:text-emerald-300"
+                        >
+                            <Compass className="w-3.5 h-3.5" />
+                            <span>View on GIS Map</span>
+                        </Link>
+                        <Link
+                            to="/search"
+                            className="flex items-center space-x-1 text-xs font-bold text-sky-400 hover:text-sky-300"
+                        >
+                            <span>View All Homestays</span>
+                            <ArrowRight className="w-4 h-4" />
+                        </Link>
+                    </div>
                 </div>
 
                 {featuredHomestays.length === 0 ? (
@@ -175,6 +244,12 @@ const LandingPage = () => {
                                             <Star className="w-3.5 h-3.5 fill-amber-400" />
                                             <span>{item.currentRating || 5} Stars</span>
                                         </div>
+                                        {item.ecoCertified && (
+                                            <div className="absolute top-3 left-3 bg-emerald-950/90 text-emerald-300 border border-emerald-700/80 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center space-x-1 shadow-md">
+                                                <Leaf className="w-3 h-3 text-emerald-400" />
+                                                <span>Eco Stay</span>
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="p-5 space-y-3">
