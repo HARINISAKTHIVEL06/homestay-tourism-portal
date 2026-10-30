@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Lock, Mail, Building2, ShieldAlert, ArrowRight, CheckCircle } from 'lucide-react';
@@ -8,6 +8,11 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setEmail('');
+        setPassword('');
+    }, []);
 
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -70,7 +75,11 @@ const LoginPage = () => {
                         </div>
                     )}
 
-                    <form className="space-y-5" onSubmit={handleSubmit}>
+                    <form className="space-y-5" onSubmit={handleSubmit} autoComplete="off">
+                        {/* Hidden decoy fields to absorb aggressive browser autofill */}
+                        <input type="text" name="fake_usernameremembered" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+                        <input type="password" name="fake_passwordremembered" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+
                         <div>
                             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
                                 Email Address
@@ -81,7 +90,12 @@ const LoginPage = () => {
                                 </div>
                                 <input
                                     type="email"
+                                    name="portal_identity_email"
+                                    id="portal_identity_email"
                                     required
+                                    autoComplete="off"
+                                    autoCapitalize="none"
+                                    spellCheck="false"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="name@domain.com"
@@ -100,7 +114,10 @@ const LoginPage = () => {
                                 </div>
                                 <input
                                     type="password"
+                                    name="portal_identity_password"
+                                    id="portal_identity_password"
                                     required
+                                    autoComplete="new-password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
