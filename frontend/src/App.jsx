@@ -4,7 +4,6 @@ import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
-
 // Pages
 import LandingPage from './pages/LandingPage';
 import SearchPage from './pages/SearchPage';
@@ -22,7 +21,6 @@ import InspectorQueuePage from './pages/InspectorQueuePage';
 import InspectionFormPage from './pages/InspectionFormPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import ProtectedRoute from './routes/ProtectedRoute';
-
 function App() {
     return (
         <AuthProvider>
