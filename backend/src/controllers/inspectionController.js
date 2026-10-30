@@ -9,12 +9,19 @@ const { generateCertificatePDF } = require('../services/certificateGenerator');
 // @access  Private (Inspector)
 const getAssignedInspections = async (req, res, next) => {
     try {
-        const homestays = await Homestay.find({
-            assignedInspector: req.user._id,
+        const query = {
             status: { $in: ['inspection_scheduled', 'inspected', 'approved'] },
-        })
+            $or: [
+                { assignedInspector: req.user._id },
+                { district: req.user.district, assignedInspector: { $exists: true, $ne: null } },
+                { assignedInspector: { $exists: true, $ne: null } },
+            ],
+        };
+
+        const homestays = await Homestay.find(query)
             .populate('owner', 'name email phone')
-            .sort({ inspectionDate: 1 });
+            .populate('assignedInspector', 'name email phone')
+            .sort({ inspectionDate: 1, updatedAt: -1 });
 
         return res.status(200).json({
             success: true,

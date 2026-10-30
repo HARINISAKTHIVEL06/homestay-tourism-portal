@@ -28,7 +28,11 @@ const ReviewApplicationsPage = () => {
     // Modal State
     const [assignModalOpen, setAssignModalOpen] = useState(false);
     const [selectedInspectorId, setSelectedInspectorId] = useState('');
-    const [inspectionDate, setInspectionDate] = useState('');
+    const [inspectionDate, setInspectionDate] = useState(() => {
+        const d = new Date();
+        d.setDate(d.getDate() + 3);
+        return d.toISOString().split('T')[0];
+    });
     const [actionLoading, setActionLoading] = useState(false);
 
     // Remarks State
@@ -326,7 +330,7 @@ const ReviewApplicationsPage = () => {
                                     >
                                         {inspectors.map((ins) => (
                                             <option key={ins._id} value={ins._id}>
-                                                {ins.name} ({ins.district || 'Statewide'})
+                                                {ins.name} ({ins.email}) - {ins.district || 'Statewide'}
                                             </option>
                                         ))}
                                     </select>
