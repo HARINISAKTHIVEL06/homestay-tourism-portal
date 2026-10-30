@@ -64,8 +64,9 @@ const ReviewApplicationsPage = () => {
             const res = await API.get('/users', { params: { role: 'inspector' } });
             if (res.data.success) {
                 setInspectors(res.data.data);
-                if (res.data.data.length > 0) {
-                    setSelectedInspectorId(res.data.data[0]._id);
+                const targetInspector = res.data.data.find((ins) => ins.email === 'inspector@tourism.gov.in') || res.data.data[0];
+                if (targetInspector) {
+                    setSelectedInspectorId(targetInspector._id);
                 }
             }
         } catch (err) {
