@@ -153,13 +153,30 @@ const Navbar = () => {
                         )}
 
                         {(user?.role === 'superadmin' || user?.role === 'districtadmin') && (
-                            <Link
-                                to="/admin/dashboard"
-                                className="flex items-center space-x-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-sky-300 px-3 py-1.5 rounded-lg border border-slate-700 transition-all"
-                            >
-                                <ClipboardList className="w-3.5 h-3.5 text-sky-400" />
-                                <span>{t('navAdminPortal')}</span>
-                            </Link>
+                            <>
+                                <Link
+                                    to="/admin/dashboard"
+                                    className={`flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all ${
+                                        location.pathname === '/admin/dashboard'
+                                            ? 'bg-sky-600 text-white border-sky-500 shadow-sm'
+                                            : 'bg-slate-800 hover:bg-slate-700 text-sky-300 border-slate-700'
+                                    }`}
+                                >
+                                    <ClipboardList className="w-3.5 h-3.5 text-sky-400" />
+                                    <span>{t('navAdminPortal')}</span>
+                                </Link>
+                                <Link
+                                    to="/officer/applications"
+                                    className={`flex items-center space-x-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all ${
+                                        location.pathname === '/officer/applications'
+                                            ? 'bg-sky-600 text-white border-sky-500 shadow-sm'
+                                            : 'bg-slate-800 hover:bg-slate-700 text-sky-300 border-slate-700'
+                                    }`}
+                                >
+                                    <FileText className="w-3.5 h-3.5 text-sky-400" />
+                                    <span>{t('navReviewApps')}</span>
+                                </Link>
+                            </>
                         )}
 
                         {user?.role === 'inspector' && (
@@ -271,6 +288,46 @@ const Navbar = () => {
                                 <span className="text-sm font-bold text-white">{user.name}</span>
                                 {getRoleBadge(user.role)}
                             </div>
+
+                            {/* Mobile Role Links */}
+                            {user.role === 'owner' && (
+                                <Link
+                                    to="/owner/dashboard"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="block text-sky-400 font-semibold py-1"
+                                >
+                                    {t('navDashboard')}
+                                </Link>
+                            )}
+
+                            {(user.role === 'superadmin' || user.role === 'districtadmin') && (
+                                <div className="space-y-2 pt-1 border-t border-slate-800/60">
+                                    <Link
+                                        to="/admin/dashboard"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="block text-sky-400 font-semibold py-1"
+                                    >
+                                        {t('navAdminPortal')}
+                                    </Link>
+                                    <Link
+                                        to="/officer/applications"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="block text-emerald-400 font-semibold py-1"
+                                    >
+                                        {t('navReviewApps')}
+                                    </Link>
+                                </div>
+                            )}
+
+                            {user.role === 'inspector' && (
+                                <Link
+                                    to="/inspector/assignments"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="block text-emerald-400 font-semibold py-1"
+                                >
+                                    {t('navInspectionQueue')}
+                                </Link>
+                            )}
                             <button
                                 onClick={() => { setMobileMenuOpen(false); handleLogout(); }}
                                 className="w-full text-left py-2 text-red-400 hover:text-red-300 font-semibold"

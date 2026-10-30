@@ -136,19 +136,36 @@ const ReviewApplicationsPage = () => {
 
                 {/* Filters Bar */}
                 <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-900 p-4 rounded-2xl border border-slate-800">
-                    <div className="flex items-center space-x-2 overflow-x-auto">
-                        {['submitted', 'under_review', 'inspection_scheduled', 'approved', 'rejected'].map((st) => (
+                    <div className="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0">
+                        {['all', 'submitted', 'under_review', 'inspection_scheduled', 'approved', 'rejected'].map((st) => (
                             <button
                                 key={st}
                                 onClick={() => setStatusFilter(st)}
-                                className={`px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${statusFilter === st
+                                className={`px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap ${statusFilter === st
                                         ? 'bg-sky-600 text-white shadow-md'
                                         : 'bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800'
                                     }`}
                             >
-                                {st.replace('_', ' ')}
+                                {st === 'all' ? 'All Statuses' : st.replace('_', ' ')}
                             </button>
                         ))}
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                        <MapPin className="w-4 h-4 text-sky-400" />
+                        <select
+                            value={districtFilter}
+                            onChange={(e) => setDistrictFilter(e.target.value)}
+                            className="bg-slate-950 border border-slate-800 text-slate-200 text-xs rounded-xl px-3 py-2 font-medium focus:outline-none focus:border-sky-500"
+                        >
+                            <option value="">All Districts</option>
+                            <option value="Central District">Central District</option>
+                            <option value="North Hill District">North Hill District</option>
+                            <option value="South Beach District">South Beach District</option>
+                            <option value="Valley District">Valley District</option>
+                            <option value="Western Ghats District">Western Ghats District</option>
+                            <option value="Eastern Coastal District">Eastern Coastal District</option>
+                        </select>
                     </div>
                 </div>
 

@@ -138,6 +138,13 @@ const AdminDashboardPage = () => {
 
                     <div className="flex flex-wrap items-center gap-3 shrink-0">
                         <Link
+                            to="/officer/applications"
+                            className="flex items-center space-x-2 px-4 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-xs shadow-lg transition-all"
+                        >
+                            <FileText className="w-4 h-4 text-white" />
+                            <span>Review Applications Queue</span>
+                        </Link>
+                        <Link
                             to="/explorer"
                             className="flex items-center space-x-2 px-4 py-2.5 bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-800 font-bold rounded-xl text-xs shadow-md transition-all"
                         >
@@ -156,14 +163,20 @@ const AdminDashboardPage = () => {
 
                 {/* KPI Cards Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-2">
-                        <div className="flex items-center justify-between text-slate-400">
+                    <Link
+                        to="/officer/applications"
+                        className="bg-slate-900/80 border border-slate-800 hover:border-sky-500/60 transition-all p-5 rounded-2xl space-y-2 group block"
+                    >
+                        <div className="flex items-center justify-between text-slate-400 group-hover:text-sky-400">
                             <span className="text-xs font-semibold uppercase">Total Applications</span>
                             <Building2 className="w-4 h-4 text-sky-400" />
                         </div>
                         <h2 className="text-3xl font-extrabold text-white font-outfit">{kpis.totalHomestays || 0}</h2>
-                        <p className="text-[11px] text-slate-400">{kpis.submittedCount} Pending Review</p>
-                    </div>
+                        <p className="text-[11px] text-sky-400 font-medium flex items-center space-x-1">
+                            <span>{kpis.submittedCount || 0} Pending Review</span>
+                            <ArrowRight className="w-3 h-3 inline group-hover:translate-x-0.5 transition-transform" />
+                        </p>
+                    </Link>
 
                     <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-2">
                         <div className="flex items-center justify-between text-slate-400">

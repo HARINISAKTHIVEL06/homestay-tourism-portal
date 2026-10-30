@@ -134,10 +134,10 @@ const getHomestays = async (req, res, next) => {
         const { status, district, search, page = 1, limit = 20 } = req.query;
         const query = {};
 
-        if (status) query.status = status;
-        if (district) query.district = district;
+        if (status && status !== 'all') query.status = status;
+        if (district && district !== 'all') query.district = district;
 
-        // If district officer, default filter to their district
+        // If district officer, default filter to their district unless specified or all
         if (req.user.role === 'districtadmin' && req.user.district && !district) {
             query.district = req.user.district;
         }

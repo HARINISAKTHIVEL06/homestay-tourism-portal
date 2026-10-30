@@ -60,6 +60,7 @@ function App() {
                                 <Route element={<ProtectedRoute allowedRoles={['inspector']} />}>
                                     <Route path="/inspector/assignments" element={<InspectorQueuePage />} />
                                     <Route path="/inspector/evaluate/:id" element={<InspectionFormPage />} />
+                                    <Route path="/inspector/inspect/:id" element={<InspectionFormPage />} />
                                 </Route>
 
                                 {/* Fallback */}

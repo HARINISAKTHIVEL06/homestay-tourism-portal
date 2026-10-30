@@ -4,7 +4,8 @@ import API from '../services/api';
 import { ShieldCheck, Star, Award, CheckCircle, AlertTriangle, ArrowLeft, Send } from 'lucide-react';
 
 const InspectionFormPage = () => {
-    const { homestayId } = useParams();
+    const { id, homestayId } = useParams();
+    const activeId = id || homestayId;
     const navigate = useNavigate();
 
     const [homestay, setHomestay] = useState(null);
@@ -16,13 +17,15 @@ const InspectionFormPage = () => {
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
-        fetchData();
-    }, [homestayId]);
+        if (activeId) {
+            fetchData();
+        }
+    }, [activeId]);
 
     const fetchData = async () => {
         try {
             const [homestayRes, criteriaRes] = await Promise.all([
-                API.get(`/homestays/${homestayId}`),
+                API.get(`/homestays/${activeId}`),
                 API.get('/rating-criteria'),
             ]);
 
@@ -89,7 +92,7 @@ const InspectionFormPage = () => {
                 remarks: remarks[c.category] || '',
             }));
 
-            const res = await API.post(`/inspections/${homestayId}`, {
+            const res = await API.post(`/inspections/${activeId}`, {
                 scores: scoresPayload,
                 overallRemarks,
             });
